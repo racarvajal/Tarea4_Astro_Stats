@@ -9,8 +9,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numpy.linalg import inv
 from scipy.stats import chi2
+from matplotlib import rc
 
 # Plot style
+rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
+rc('text', usetex=True)
 plt.style.use('bmh')
 
 # Import data from file
@@ -41,16 +44,6 @@ Theta = np.dot(A, B)  # best parameters from MLE
 
 Y_theta = np.dot(M, Theta) + L  # Y points using parameters in model
 
-# Plot original data and model
-plt.errorbar(datos[:, 0], datos[:, 1], yerr=datos[:, 2], ls='none', marker='p')
-plt.plot(datos[:, 0], Y_theta)
-plt.xlim(0.15, 0.85)
-plt.ylim(0.9997, 1.0002)
-plt.xlabel('$\mathrm{tiempo}$ $\mathrm{(dias)}$')
-plt.ylabel('$\mathrm{Flujo}$ $\mathrm{normalizado}$')
-# plt.savefig('T4_p1.pdf')
-plt.show()
-
 # Obtain X^2 and p-value from model
 # X^{2} = (Y_k - Y_theta)^t.V^{-1}.(Y_k - Y_theta)
 C = (Y - Y_theta)
@@ -64,3 +57,15 @@ print('The p-value is: %f' % p_value)
 print('H_0 is rejected with a probability of: %f' % cdf_X_sq)
 print('H_0 is rejected with a probability of: %f%%' % (cdf_X_sq * 100))
 
+# Plot original data and model
+plt.errorbar(datos[:, 0], datos[:, 1], yerr=datos[:, 2], ls='none', marker='p', label='$\mathrm{data}$')
+plt.plot(datos[:, 0], Y_theta, label='$\mathrm{model}$')
+plt.xlim(0.15, 0.85)
+plt.ylim(0.9997, 1.0002)
+ax = plt.gca()
+ax.set_yticklabels(ax.get_yticks())
+plt.xlabel('$\mathrm{tiempo}$ $\mathrm{(dias)}$')
+plt.ylabel('$\mathrm{Flujo}$ $\mathrm{normalizado}$')
+plt.legend(loc='best', title=('$\chi_{%i}^{2} = %.3f$\n$\mathrm{p-value}=%.3f$' % (np.shape(datos)[0] - (p + 2), X_sq, p_value)))
+# plt.savefig('T4_p1.pdf')
+plt.show()
