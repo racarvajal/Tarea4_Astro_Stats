@@ -48,6 +48,7 @@ plt.xlim(0.15, 0.85)
 plt.ylim(0.9997, 1.0002)
 plt.xlabel('$\mathrm{tiempo}$ $\mathrm{(dias)}$')
 plt.ylabel('$\mathrm{Flujo}$ $\mathrm{normalizado}$')
+# plt.savefig('T4_p1.pdf')
 plt.show()
 
 # Obtain X^2 and p-value from model
